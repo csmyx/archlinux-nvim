@@ -3,9 +3,26 @@ return {
     "AstroNvim/astrocore",
     ---@type AstroCoreOpts
     opts = {
+      -- NOTE: keycodes follow the casing in the vimdocs. For example, `<Leader>` must be capitalized
       mappings = {
         -- first key is the mode
         n = {
+          -- second key is the lefthand side of the map
+
+          -- navigate buffer tabs
+          ["]b"] = { function() require("astrocore.buffer").nav(vim.v.count1) end, desc = "Next buffer" },
+          ["[b"] = { function() require("astrocore.buffer").nav(-vim.v.count1) end, desc = "Previous buffer" },
+
+          -- mappings seen under group name "Buffer"
+          ["<Leader>bd"] = {
+            function()
+              require("astroui.status.heirline").buffer_picker(
+                function(bufnr) require("astrocore.buffer").close(bufnr) end
+              )
+            end,
+            desc = "Close buffer from tabline",
+          },
+
           ["gh"] = { "^", desc = "go to head of line" },
           ["gl"] = { "$", desc = "go to tail of line" },
           ["gm"] = { "%", desc = "Jump to matching bracket" },
@@ -68,35 +85,6 @@ return {
     opts = {
       mappings = {
         n = {
-          -- -- this mapping will only be set in buffers with an LSP attached
-          -- K = {
-          --   function() vim.lsp.buf.hover() end,
-          --   desc = "Hover symbol details",
-          -- },
-          -- -- condition for only server with declaration capabilities
-          -- gD = {
-          --   function() vim.lsp.buf.declaration() end,
-          --   desc = "Declaration of current symbol",
-          --   cond = "textDocument/declaration",
-          -- },
-
-          -- Override the default lsp mappings in `_astrolsp_mappings.lua`
-          ["<Leader>lL"] = {
-            function() vim.lsp.codelens.refresh() end,
-            desc = "LSP CodeLens refresh",
-            cond = "textDocument/codeLens",
-          },
-          ["<Leader>ll"] = {
-            function() vim.lsp.codelens.run() end,
-            desc = "LSP CodeLens run",
-            cond = "textDocument/codeLens",
-          },
-          -- ["<Leader>uL"] = {
-          --   function() require("astrolsp.toggles").codelens() end,
-          --   desc = "Toggle CodeLens",
-          --   cond = "textDocument/codeLens",
-          -- },
-
           -- swap the two mappings below
           ["<Leader>lr"] = {
             function() vim.lsp.buf.references() end,
