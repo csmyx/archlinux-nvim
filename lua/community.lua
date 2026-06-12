@@ -13,6 +13,7 @@ return {
   { import = "astrocommunity.pack.cpp" },
   { import = "astrocommunity.pack.python" },
 
+  { import = "astrocommunity.recipes.neovide" },
   { import = "astrocommunity.motion.leap-nvim" },
 
   { import = "astrocommunity.recipes.vscode" },

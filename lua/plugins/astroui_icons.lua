@@ -71,7 +71,7 @@ return {
     opts = {
       filetype = {
         -- cpp = { glyph = "󰙲", hl = "MiniIconsAzure" },
-        -- cpp = { glyph = "", hl = "MiniIconsAzure" },
+        cpp = { glyph = "", hl = "MiniIconsAzure" },
         -- yaml = { glyph = "", hl = "MiniIconsPurple" },
         -- sh = { glyph = "", hl = "MiniIconsGreen" },
         -- zsh = { glyph = "", hl = "MiniIconsGreen" },
