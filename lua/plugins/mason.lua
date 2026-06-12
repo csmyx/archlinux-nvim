@@ -10,10 +10,12 @@ return {
         -- install language servers
         "lua-language-server",
         "clangd",
+        "bash-language-server",
 
         -- install formatters
         "stylua",
         "clang-format",
+        "shfmt",
 
         -- install debuggers
         "debugpy",
