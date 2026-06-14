@@ -1,80 +1,117 @@
+-- return {
+--   "mrcjkb/rustaceanvim", -- add lsp plugin
+--   -- -- NOTE: disabled
+--   -- enabled = false,
+--   version = "^5",
+--   lazy = false, -- This plugin is already lazy
+--   dependencies = {
+--     {
+--       "AstroNvim/astrolsp",
+--       ---@type AstroLSPOpts
+--       opts = {
+--         handlers = { rust_analyzer = false }, -- Let rustaceanvim setup `rust_analyzer`
+--         ---@diagnostic disable: missing-fields
+--         config = {
+--           rust_analyzer = {
+--             settings = {
+--               ["rust-analyzer"] = {
+--                 signatureInfo = {
+--                   -- detail = "parameters", -- only show parameters
+--                   --
+--                   -- https://rust-analyzer.github.io/book/configuration.html#signatureInfo.documentation.enable
+--                   documentation = { enable = false }, -- disable signature detail
+--                 },
+--                 procMacro = {
+--                   ignored = {
+--                     leptos_macro = {
+--                       -- optional: --
+--                       -- "component",
+--                       "server",
+--                     },
+--                   },
+--                 },
+--                 cargo = {
+--                   features = "all", -- Enable all features
+--                 },
+--                 -- CodeLens settings
+--                 lens = {
+--                   -- Enable runnable CodeLens (the Run/Debug buttons)
+--                   enable = true,
+--                 },
+--               },
+--             },
+--           },
+--         },
+--       },
+--     },
+--     {
+--       "WhoIsSethDaniel/mason-tool-installer.nvim",
+--       opts = {
+--         ensure_installed = { "rust-analyzer" }, -- automatically install lsp
+--       },
+--     },
+--   },
+--   opts = function(_, opts)
+--     local astrolsp_avail, astrolsp = pcall(require, "astrolsp")
+--     local astrolsp_opts = (astrolsp_avail and astrolsp.lsp_opts "rust_analyzer") or {}
+--     local server = {
+--       ---@type table | (fun(project_root:string|nil, default_settings: table|nil):table) -- The rust-analyzer settings or a function that creates them.
+--       settings = function(project_root, default_settings)
+--         local astrolsp_settings = astrolsp_opts.settings or {}
+--
+--         local merge_table = require("astrocore").extend_tbl(default_settings or {}, astrolsp_settings)
+--         local ra = require "rustaceanvim.config.server"
+--         -- load_rust_analyzer_settings merges any found settings with the passed in default settings table and then returns that table
+--         return ra.load_rust_analyzer_settings(project_root, {
+--           settings_file_pattern = "rust-analyzer.json",
+--           default_settings = merge_table,
+--         })
+--       end,
+--     }
+--     return { server = require("astrocore").extend_tbl(astrolsp_opts, server) }
+--     --
+--     -- 返回合并后的配置（LSP + DAP）
+--     -- return vim.tbl_deep_extend("force", { server = require("astrocore").extend_tbl(astrolsp_opts, server) }, {
+--     --   dap = {
+--     --     autoload_configurations = true, -- 这就是你需要的核心配置
+--     --   },
+--     -- })
+--   end,
+--   -- configure `rustaceanvim` by setting the `vim.g.rustaceanvim` variable
+--   config = function(_, opts) vim.g.rustaceanvim = require("astrocore").extend_tbl(opts, vim.g.rustaceanvim) end,
+--
+-- }
+
 return {
-  --   {
-  --     "mrcjkb/rustaceanvim", -- add lsp plugin
-  --     version = "^5",
-  --     lazy = false, -- This plugin is already lazy
-  --     opts = function(_, opts)
-  --       local astrolsp_avail, astrolsp = pcall(require, "astrolsp")
-  --       local astrolsp_opts = (astrolsp_avail and astrolsp.lsp_opts "rust_analyzer") or {}
-  --       local server = {
-  --         ---@type table | (fun(project_root:string|nil, default_settings: table|nil):table) -- The rust-analyzer settings or a function that creates them.
-  --         settings = function(project_root, default_settings)
-  --           local astrolsp_settings = astrolsp_opts.settings or {}
-  --
-  --           local merge_table = require("astrocore").extend_tbl(default_settings or {}, astrolsp_settings)
-  --           local ra = require "rustaceanvim.config.server"
-  --           -- load_rust_analyzer_settings merges any found settings with the passed in default settings table and then returns that table
-  --           return ra.load_rust_analyzer_settings(project_root, {
-  --             settings_file_pattern = "rust-analyzer.json",
-  --             default_settings = merge_table,
-  --           })
-  --         end,
-  --       }
-  --       return { server = require("astrocore").extend_tbl(astrolsp_opts, server) }
-  --       --
-  --       -- 返回合并后的配置（LSP + DAP）
-  --       -- return vim.tbl_deep_extend("force", { server = require("astrocore").extend_tbl(astrolsp_opts, server) }, {
-  --       --   dap = {
-  --       --     autoload_configurations = true, -- 这就是你需要的核心配置
-  --       --   },
-  --       -- })
-  --     end,
-  --     -- configure `rustaceanvim` by setting the `vim.g.rustaceanvim` variable
-  --     config = function(_, opts) vim.g.rustaceanvim = require("astrocore").extend_tbl(opts, vim.g.rustaceanvim) end,
-  --   },
-  --   {
-  --     "AstroNvim/astrolsp",
-  --     ---@type AstroLSPOpts
-  --     opts = {
-  --       handlers = { rust_analyzer = false }, -- Let rustaceanvim setup `rust_analyzer`
-  --       ---@diagnostic disable: missing-fields
-  --       config = {
-  --         rust_analyzer = {
-  --           settings = {
-  --             ["rust-analyzer"] = {
-  --               signatureInfo = {
-  --                 -- detail = "parameters", -- only show parameters
-  --                 --
-  --                 -- https://rust-analyzer.github.io/book/configuration.html#signatureInfo.documentation.enable
-  --                 documentation = { enable = false }, -- disable signature detail
-  --               },
-  --               procMacro = {
-  --                 ignored = {
-  --                   leptos_macro = {
-  --                     -- optional: --
-  --                     -- "component",
-  --                     "server",
-  --                   },
-  --                 },
-  --               },
-  --               cargo = {
-  --                 features = "all", -- Enable all features
-  --               },
-  --               -- CodeLens settings
-  --               lens = {
-  --                 -- Enable runnable CodeLens (the Run/Debug buttons)
-  --                 enable = true,
-  --               },
-  --             },
-  --           },
-  --         },
-  --       },
-  --     },
-  --   },
-  --   {
-  --     "williamboman/mason-lspconfig.nvim",
-  --     opts = {
-  --       ensure_installed = { "rust_analyzer" }, -- automatically install lsp
-  --     },
-  --   },
+  {
+    "mrcjkb/rustaceanvim", -- add lsp plugin
+    version = "^5",
+    lazy = false, -- This plugin is already lazy
+    opts = function(_, opts)
+      local server_opts = vim.lsp.config.rust_analyzer
+      local server = {
+        ---@type table | (fun(project_root:string|nil, default_settings: table|nil):table) -- The rust-analyzer settings or a function that creates them.
+        settings = function(project_root, default_settings)
+          -- local merge_table = require("astrocore").extend_tbl(default_settings or {}, server_opts.settings or {})
+          local ra = require "rustaceanvim.config.server"
+          -- load_rust_analyzer_settings merges any found settings with the passed in default settings table and then returns that table
+          return ra.load_rust_analyzer_settings(project_root, {
+            settings_file_pattern = "rust-analyzer.json",
+            -- default_settings = merge_table,
+            default_settings = {},
+          })
+        end,
+      }
+      return { server = require("astrocore").extend_tbl(server_opts, server) }
+    end,
+    -- configure `rustaceanvim` by setting the `vim.g.rustaceanvim` variable
+    config = function(_, opts) vim.g.rustaceanvim = require("astrocore").extend_tbl(opts, vim.g.rustaceanvim) end,
+  },
+  {
+    "AstroNvim/astrolsp",
+    ---@type AstroLSPOpts
+    opts = {
+      handlers = { rust_analyzer = false }, -- Let rustaceanvim setup `rust_analyzer`
+    },
+  },
 }

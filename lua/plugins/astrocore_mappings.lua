@@ -28,14 +28,6 @@ return {
           ["gm"] = { "%", desc = "Jump to matching bracket" },
           ["<C-e>"] = { "3<C-e>", desc = "Scroll up 3 lines" },
           ["<C-y>"] = { "3<C-y>", desc = "Scroll down 3 lines" },
-
-          ["<Leader>c"] = { "<Cmd>confirm q<CR>", desc = "Quit Window" },
-          ["<Leader>C"] = { "<Cmd>confirm qall<CR>", desc = "Exit AstroNvim" },
-          ["<Leader>q"] = { function() require("astrocore.buffer").close() end, desc = "Close buffer" },
-          ["<Leader>Q"] = {
-            function() require("astrocore.buffer").close(0, true) end,
-            desc = "Force close buffer",
-          },
           ["<A-l>"] = { function() require("astrocore.buffer").nav(vim.v.count1) end, desc = "Next buffer" },
           ["<A-h>"] = { function() require("astrocore.buffer").nav(-vim.v.count1) end, desc = "Previous buffer" },
 
@@ -51,14 +43,6 @@ return {
           ["gm"] = { "%", desc = "Jump to matching bracket" },
           ["<C-e>"] = { "3<C-e>", desc = "Scroll up 3 lines" },
           ["<C-y>"] = { "3<C-y>", desc = "Scroll down 3 lines" },
-
-          ["<Leader>c"] = { "<Cmd>confirm q<CR>", desc = "Quit Window" },
-          ["<Leader>C"] = { "<Cmd>confirm qall<CR>", desc = "Exit AstroNvim" },
-          ["<Leader>q"] = { function() require("astrocore.buffer").close() end, desc = "Close buffer" },
-          ["<Leader>Q"] = {
-            function() require("astrocore.buffer").close(0, true) end,
-            desc = "Force close buffer",
-          },
           ["<A-l>"] = { function() require("astrocore.buffer").nav(vim.v.count1) end, desc = "Next buffer" },
           ["<A-h>"] = { function() require("astrocore.buffer").nav(-vim.v.count1) end, desc = "Previous buffer" },
 

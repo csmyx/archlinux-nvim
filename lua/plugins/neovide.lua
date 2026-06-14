@@ -30,8 +30,11 @@ return {
         neovide_padding_right = 0,
         neovide_padding_left = 0,
         neovide_fullscreen = true,
-        neovide_opacity = 0.8,
-        neovide_normal_opacity = 0.8,
+        -- neovide_opacity = 0.8,
+        -- neovide_normal_opacity = 0.8,
+
+        --NOTE: why this doesn't work
+        -- neovide_theme = "dark"
       },
     },
   },
