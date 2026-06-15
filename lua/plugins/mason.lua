@@ -11,6 +11,7 @@ return {
         "lua-language-server",
         "clangd",
         "bash-language-server",
+        "fish-lsp",
 
         -- install formatters
         "stylua",

@@ -26,6 +26,15 @@ return {
           { function() astro.toggle_term_cmd { cmd = claude, direction = "tab" } end, desc = "ToggleTerm claude" }
       end
 
+      -- opencode
+      local opencode = "opencode --port"
+      maps.n["<Leader>to"] =
+        { function() astro.toggle_term_cmd { cmd = opencode, direction = "tab" } end, desc = "ToggleTerm opencode" }
+      -- if vim.fn.executable(opencode) == 1 then
+      --   maps.n["<Leader>to"] =
+      --     { function() astro.toggle_term_cmd { cmd = opencode, direction = "tab" } end, desc = "ToggleTerm opencode" }
+      -- end
+
       -- lazygit
       if vim.fn.executable "git" == 1 and vim.fn.executable "lazygit" == 1 then
         local lazygit = {

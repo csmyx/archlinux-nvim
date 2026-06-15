@@ -28,14 +28,18 @@ return {
           ["gm"] = { "%", desc = "Jump to matching bracket" },
           ["<C-e>"] = { "3<C-e>", desc = "Scroll up 3 lines" },
           ["<C-y>"] = { "3<C-y>", desc = "Scroll down 3 lines" },
-          ["<A-l>"] = { function() require("astrocore.buffer").nav(vim.v.count1) end, desc = "Next buffer" },
-          ["<A-h>"] = { function() require("astrocore.buffer").nav(-vim.v.count1) end, desc = "Previous buffer" },
 
+          ["<A-h>"] = { function() require("astrocore.buffer").nav(-vim.v.count1) end, desc = "Previous buffer" },
+          ["<A-l>"] = { function() require("astrocore.buffer").nav(vim.v.count1) end, desc = "Next buffer" },
+          ["<A-k>"] = { function() vim.cmd "tabprevious" end, desc = "Previous tab" },
+          ["<A-j>"] = { function() vim.cmd "tabnext" end, desc = "Next tab" },
+
+          -- ["<C-w>_"] = function() vim.cmd "WindowsMaximizeVertically" end,
           ["<Leader>lw"] = {
             function() require("snacks").picker.lsp_workspace_symbols { live = true } end,
             desc = "Search workspace symbols",
           },
-          ["<Leader>o"] = false,
+          -- ["<Leader>o"] = false,
         },
         v = {
           ["gh"] = { "^", desc = "go to head of line" },
@@ -43,14 +47,17 @@ return {
           ["gm"] = { "%", desc = "Jump to matching bracket" },
           ["<C-e>"] = { "3<C-e>", desc = "Scroll up 3 lines" },
           ["<C-y>"] = { "3<C-y>", desc = "Scroll down 3 lines" },
-          ["<A-l>"] = { function() require("astrocore.buffer").nav(vim.v.count1) end, desc = "Next buffer" },
+
           ["<A-h>"] = { function() require("astrocore.buffer").nav(-vim.v.count1) end, desc = "Previous buffer" },
+          ["<A-l>"] = { function() require("astrocore.buffer").nav(vim.v.count1) end, desc = "Next buffer" },
+          ["<A-k>"] = { function() vim.cmd "tabprevious" end, desc = "Previous tab" },
+          ["<A-j>"] = { function() vim.cmd "tabnext" end, desc = "Next tab" },
 
           ["<Leader>lw"] = {
             function() require("snacks").picker.lsp_workspace_symbols { live = true } end,
             desc = "Search workspace symbols",
           },
-          ["<Leader>o"] = false,
+          -- ["<Leader>o"] = false,
         },
         i = {},
         t = {
