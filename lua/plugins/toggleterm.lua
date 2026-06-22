@@ -19,11 +19,13 @@ return {
           { function() astro.toggle_term_cmd { cmd = btop, direction = "tab" } end, desc = "ToggleTerm btop" }
       end
 
-      -- claude
-      local claude = "claude"
-      if vim.fn.executable(claude) == 1 then
-        maps.n["<Leader>tc"] =
-          { function() astro.toggle_term_cmd { cmd = claude, direction = "tab" } end, desc = "ToggleTerm claude" }
+      -- opencode
+      local opencode = "opencode"
+      if vim.fn.executable(opencode) == 1 then
+        maps.n["<Leader>to"] = {
+          function() astro.toggle_term_cmd { cmd = "opencode --port", direction = "tab" } end,
+          desc = "ToggleTerm opencode",
+        }
       end
 
       -- lazygit
@@ -39,6 +41,8 @@ return {
         }
         maps.n["<Leader>tl"] = { lazygit.callback, desc = lazygit.desc }
       end
+
+      maps.n["<Leader>tt"] = { "<Cmd>ToggleTerm direction=tab<CR>", desc = "ToggleTerm tab" }
     end,
   },
 

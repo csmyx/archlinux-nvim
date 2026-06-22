@@ -54,7 +54,7 @@ return {
         },
         i = {},
         t = {
-          ["<C-n>"] = { "<C-\\><C-n>", desc = "Return to normal mode in terminal" },
+          ["<A-n>"] = { "<C-\\><C-n>", desc = "Return to normal mode in terminal" },
         },
         c = {
           ["<A-b>"] = { "<C-Left>" },
