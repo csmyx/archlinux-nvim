@@ -12,6 +12,7 @@ return {
     config = function(_, opts) require("neocodeium").setup(opts) end,
     -- insert 模式键位（已确认与 blink.cmp / toggleterm / 现有 <A-*> 键位无冲突）
     keys = {
+      { "<Leader>ua", function() require("neocodeium.commands").toggle() end, mode = "n", desc = "Toggle AI completion" },
       { "<A-f>", function() require("neocodeium").accept() end, mode = "i", desc = "Accept AI suggestion" },
       { "<A-w>", function() require("neocodeium").accept_word() end, mode = "i", desc = "Accept AI suggestion word" },
       { "<A-a>", function() require("neocodeium").accept_line() end, mode = "i", desc = "Accept AI suggestion line" },

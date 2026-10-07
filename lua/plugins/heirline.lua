@@ -16,6 +16,41 @@ return {
       end,
     }
 
+    -- AI completion (NeoCodeium) status: icon shows enabled/disabled + server connection
+    local NeoCodeium = {
+      static = {
+        status_icons = {
+          [0] = "󰚩 ", -- enabled
+          [1] = "󱚧 ", -- disabled globally
+          [2] = "󱙻 ", -- disabled for buffer
+          [3] = "󱙺 ", -- disabled for filetype
+          [4] = "󱙺 ", -- disabled by filter
+          [5] = "󱚠 ", -- wrong encoding
+          [6] = "󱚠 ", -- special buffer
+        },
+        server_icons = {
+          [0] = "󰣺 ", -- connected
+          [1] = "󰣻 ", -- connecting
+          [2] = "󰣽 ", -- disconnected
+        },
+      },
+      update = {
+        "User",
+        pattern = { "NeoCodeiumServer*", "NeoCodeium*{En,Dis}abled" },
+        callback = function() vim.cmd.redrawstatus() end,
+      },
+      provider = function(self)
+        local ok, status, server_status = pcall(function() return require("neocodeium").get_status() end)
+        if not ok then return "" end
+        return self.status_icons[status] .. self.server_icons[server_status]
+      end,
+      hl = function()
+        local ok, status = pcall(function() return (require("neocodeium").get_status()) end)
+        if not ok then return {} end
+        return status == 0 and { fg = "green" } or { fg = "red" }
+      end,
+    }
+
     opts.statusline = { -- statusline
       hl = { fg = "fg", bg = "bg" },
       status.component.mode(),
@@ -27,6 +62,7 @@ return {
       status.component.fill(),
       status.component.cmd_info(),
       status.component.fill(),
+      status.component.builder(NeoCodeium),
       status.component.lsp(),
       status.component.virtual_env(),
       -- status.component.treesitter(),
