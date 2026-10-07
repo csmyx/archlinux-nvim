@@ -59,4 +59,15 @@ return {
       )
     end,
   },
+
+  {
+    "mpiannucci/copy-context",
+    opts = {
+      disable_default_keymap = true,
+    },
+    keys = {
+      { "<leader>Y", "<cmd>CopyFileContext<cr>", mode = "n", desc = "Copy file context" },
+      { "<leader>y", "<cmd>CopyLineContext<cr>", mode = { "n", "v" }, desc = "Copy selection/line context" },
+    },
+  },
 }
