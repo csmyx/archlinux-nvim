@@ -58,6 +58,8 @@ return {
         x = {
           -- 选区替换：vim 进入命令行时会自动补上 '<,'> 范围，只需输入 s/a/b/g
           ["<Leader>rr"] = { ":s///gcI<Left><Left><Left><Left><Left>", desc = "Replace in selection (confirm)" },
+          -- grug-far 在选中行范围内查找关键词（选中文本不作为关键词，范围限定为选区行区间）
+          ["<Leader>S"] = { ":GrugFarWithin<CR>", desc = "Search/Replace in selection range" },
         },
         i = {},
         t = {
