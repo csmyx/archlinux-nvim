@@ -16,6 +16,7 @@ return {
 
   ---- tools ----
   { import = "astrocommunity.motion.flash-nvim" },
+  { import = "astrocommunity.search.grug-far-nvim" },
   -- { import = "astrocommunity.split-and-window.windows-nvim" },
 
   ---- ui/ux ----

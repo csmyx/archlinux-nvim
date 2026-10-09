@@ -36,6 +36,9 @@ return {
             desc = "Search workspace symbols",
           },
           ["<Leader>o"] = false,
+
+          -- 全局替换（当前文件，逐个确认）：自动展开为 :%s///gcI，光标停在第一个 / 后
+          ["<Leader>rr"] = { ":%s///gcI<Left><Left><Left><Left><Left>", desc = "Replace in file (confirm)" },
         },
         v = {
           ["gh"] = { "^", desc = "go to head of line" },
@@ -51,6 +54,10 @@ return {
             desc = "Search workspace symbols",
           },
           ["<Leader>o"] = false,
+        },
+        x = {
+          -- 选区替换：vim 进入命令行时会自动补上 '<,'> 范围，只需输入 s/a/b/g
+          ["<Leader>rr"] = { ":s///gcI<Left><Left><Left><Left><Left>", desc = "Replace in selection (confirm)" },
         },
         i = {},
         t = {
