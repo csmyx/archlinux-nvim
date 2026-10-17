@@ -39,6 +39,8 @@ return {
 
           -- 全局替换（当前文件，逐个确认）：自动展开为 :%s///gcI，光标停在第一个 / 后
           ["<Leader>rr"] = { ":%s///gcI<Left><Left><Left><Left><Left>", desc = "Replace in file (confirm)" },
+          -- 禁用内置 K 键（keyword lookup，默认调 man），防止误触
+          ["K"] = { "<Nop>", desc = "disabled (was: keyword lookup/man)" },
         },
         v = {
           ["gh"] = { "^", desc = "go to head of line" },
@@ -60,6 +62,8 @@ return {
           ["<Leader>rr"] = { ":s///gcI<Left><Left><Left><Left><Left>", desc = "Replace in selection (confirm)" },
           -- grug-far 在选中行范围内查找关键词（选中文本不作为关键词，范围限定为选区行区间）
           ["<Leader>S"] = { ":GrugFarWithin<CR>", desc = "Search/Replace in selection range" },
+          -- 视觉模式同样禁用 K（keyword lookup）
+          ["K"] = { "<Nop>", desc = "disabled (was: keyword lookup/man)" },
         },
         i = {},
         t = {
