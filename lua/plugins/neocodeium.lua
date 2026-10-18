@@ -8,6 +8,8 @@ return {
       enabled = true,
       -- 默认关闭防抖，速度优先
       debounce = false,
+      -- 静默模式：不显示 "Server started on port ..." 等非重要通知
+      silent = true,
     },
     config = function(_, opts) require("neocodeium").setup(opts) end,
     -- insert 模式键位（已确认与 blink.cmp / toggleterm / 现有 <A-*> 键位无冲突）
