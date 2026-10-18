@@ -1,3 +1,32 @@
+-- 全局（跨文件）循环引用跳转：首次按键将 LSP references 收集进 quickfix，之后在列表内循环
+local refs_pending = false
+local function global_ref_jump(dir)
+  local count = vim.v.count1
+  local win = vim.api.nvim_get_current_win()
+  local function jump_to(idx)
+    vim.api.nvim_set_current_win(win)
+    vim.cmd("cc" .. idx)
+  end
+  local qf = vim.fn.getqflist { idx = 0, size = 0, title = 0 }
+  local is_refs = qf.title and qf.title:find("References", 1, true)
+  if is_refs and qf.size > 0 then
+    local cur = qf.idx or 0
+    jump_to((((cur + dir * count - 1) % qf.size) + 1))
+  elseif not refs_pending then
+    refs_pending = true
+    vim.lsp.buf.references(nil, {
+      on_list = function(list)
+        refs_pending = false
+        vim.fn.setqflist({}, " ", list)
+        vim.cmd "botright copen"
+        local size = #list.items
+        local idx = dir > 0 and math.min(count, size) or math.max(size - count + 1, 1)
+        jump_to(idx)
+      end,
+    })
+  end
+end
+
 return {
   {
     "AstroNvim/astrocore",
@@ -47,6 +76,11 @@ return {
           -- Alt+n/p 同 ]r/[r 的循环引用跳转
           ["<A-n>"] = { function() require("snacks").words.jump(vim.v.count1, true) end, desc = "Next reference (cyclic)" },
           ["<A-p>"] = { function() require("snacks").words.jump(-vim.v.count1, true) end, desc = "Previous reference (cyclic)" },
+          -- 全局（跨文件）循环引用跳转
+          ["]R"] = { function() global_ref_jump(1) end, desc = "Next reference (global, cyclic)" },
+          ["[R"] = { function() global_ref_jump(-1) end, desc = "Previous reference (global, cyclic)" },
+          ["<A-N>"] = { function() global_ref_jump(1) end, desc = "Next reference (global, cyclic)" },
+          ["<A-P>"] = { function() global_ref_jump(-1) end, desc = "Previous reference (global, cyclic)" },
         },
         v = {
           ["gh"] = { "^", desc = "go to head of line" },
