@@ -16,23 +16,12 @@ return {
       end,
     }
 
-    -- AI completion (NeoCodeium) status: icon shows enabled/disabled + server connection
+    -- AI completion (NeoCodeium) status: 单个白色图标，启用/全局禁用/错误未就绪三种状态
     local NeoCodeium = {
       static = {
-        status_icons = {
-          [0] = "󰚩 ", -- enabled
-          [1] = "󱚧 ", -- disabled globally
-          [2] = "󱙻 ", -- disabled for buffer
-          [3] = "󱙺 ", -- disabled for filetype
-          [4] = "󱙺 ", -- disabled by filter
-          [5] = "󱚠 ", -- wrong encoding
-          [6] = "󱚠 ", -- special buffer
-        },
-        server_icons = {
-          [0] = "󰣺 ", -- connected
-          [1] = "󰣻 ", -- connecting
-          [2] = "󰣽 ", -- disconnected
-        },
+        enabled_icon = "󰚩 ",
+        disabled_icon = "󱚧 ",
+        error_icon = "󱚠 ", -- 错误或未就绪（服务器连接中/未启动/异常）
       },
       update = {
         "User",
@@ -41,13 +30,9 @@ return {
       },
       provider = function(self)
         local ok, status, server_status = pcall(function() return require("neocodeium").get_status() end)
-        if not ok then return "" end
-        return self.status_icons[status] .. self.server_icons[server_status]
-      end,
-      hl = function()
-        local ok, status = pcall(function() return (require("neocodeium").get_status()) end)
-        if not ok then return {} end
-        return status == 0 and { fg = "green" } or { fg = "red" }
+        if not ok or (status ~= 0 and status ~= 1) then return self.error_icon end
+        if status == 1 then return self.disabled_icon end
+        return server_status == 0 and self.enabled_icon or self.error_icon
       end,
     }
 

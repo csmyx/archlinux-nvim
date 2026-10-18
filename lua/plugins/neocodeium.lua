@@ -4,8 +4,8 @@ return {
     "monkoose/neocodeium",
     event = "VeryLazy",
     opts = {
-      -- 默认开启；可用 :NeoCodeium toggle / disable_buffer 控制
-      enabled = true,
+      -- 默认全局禁用，用 <Leader>ua 一键切换（启用后才启动服务器）
+      enabled = false,
       -- 默认关闭防抖，速度优先
       debounce = false,
       -- 静默模式：不显示 "Server started on port ..." 等非重要通知
