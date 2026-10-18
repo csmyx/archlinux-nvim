@@ -73,6 +73,29 @@ return {
           -- 引用跳转循环化（snacks.words 自带 cycle 参数，覆盖 AstroNvim 默认的非循环版本）
           ["]r"] = { function() require("snacks").words.jump(vim.v.count1, true) end, desc = "Next reference (cyclic)" },
           ["[r"] = { function() require("snacks").words.jump(-vim.v.count1, true) end, desc = "Previous reference (cyclic)" },
+          -- quickfix 循环跳转（覆盖 nvim 内置 ]q/[q 到末尾报 E553 的行为）
+          ["]q"] = {
+            function()
+              local qf = vim.fn.getqflist { idx = 0, size = 0 }
+              if not qf or qf.size == 0 then
+                vim.notify("Quickfix list is empty", vim.log.levels.WARN, { title = "Quickfix" })
+                return
+              end
+              vim.cmd("cc" .. (((qf.idx or 0) + vim.v.count1 - 1) % qf.size + 1))
+            end,
+            desc = "Next quickfix (cyclic)",
+          },
+          ["[q"] = {
+            function()
+              local qf = vim.fn.getqflist { idx = 0, size = 0 }
+              if not qf or qf.size == 0 then
+                vim.notify("Quickfix list is empty", vim.log.levels.WARN, { title = "Quickfix" })
+                return
+              end
+              vim.cmd("cc" .. (((qf.idx or 0) - vim.v.count1 - 1) % qf.size + 1))
+            end,
+            desc = "Previous quickfix (cyclic)",
+          },
           -- Alt+n/p 同 ]r/[r 的循环引用跳转
           ["<A-n>"] = { function() require("snacks").words.jump(vim.v.count1, true) end, desc = "Next reference (cyclic)" },
           ["<A-p>"] = { function() require("snacks").words.jump(-vim.v.count1, true) end, desc = "Previous reference (cyclic)" },
