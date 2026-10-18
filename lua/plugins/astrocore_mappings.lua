@@ -40,7 +40,33 @@ return {
           -- 全局替换（当前文件，逐个确认）：自动展开为 :%s///gcI，光标停在第一个 / 后
           ["<Leader>rr"] = { ":%s///gcI<Left><Left><Left><Left><Left>", desc = "Replace in file (confirm)" },
           -- 禁用内置 K 键（keyword lookup，默认调 man），防止误触
-          ["K"] = { "<Nop>", desc = "disabled (was: keyword lookup/man)" },
+          -- ["K"] = { "<Nop>", desc = "disabled (was: keyword lookup/man)" },
+          -- quickfix 循环跳转（覆盖 nvim 内置 ]q/[q 到末尾报 E553 的行为）
+          ["]q"] = {
+            function()
+              local qf = vim.fn.getqflist { idx = 0, size = 0 }
+              if not qf or qf.size == 0 then
+                vim.notify("Quickfix list is empty", vim.log.levels.WARN, { title = "Quickfix" })
+                return
+              end
+              vim.cmd("cc" .. (((qf.idx or 0) + vim.v.count1 - 1) % qf.size + 1))
+            end,
+            desc = "Next quickfix (cyclic)",
+          },
+          ["[q"] = {
+            function()
+              local qf = vim.fn.getqflist { idx = 0, size = 0 }
+              if not qf or qf.size == 0 then
+                vim.notify("Quickfix list is empty", vim.log.levels.WARN, { title = "Quickfix" })
+                return
+              end
+              vim.cmd("cc" .. (((qf.idx or 0) - vim.v.count1 - 1) % qf.size + 1))
+            end,
+            desc = "Previous quickfix (cyclic)",
+          },
+          -- 引用跳转循环化（snacks.words 自带 cycle 参数，覆盖 AstroNvim 默认的非循环版本）
+          ["]r"] = { function() require("snacks").words.jump(vim.v.count1, true) end, desc = "Next reference (cyclic)" },
+          ["[r"] = { function() require("snacks").words.jump(-vim.v.count1, true) end, desc = "Previous reference (cyclic)" },
         },
         v = {
           ["gh"] = { "^", desc = "go to head of line" },
@@ -56,6 +82,7 @@ return {
             desc = "Search workspace symbols",
           },
           ["<Leader>o"] = false,
+          ["K"] = { "<Nop>", desc = "disabled (was: keyword lookup/man)" },
         },
         x = {
           -- 选区替换：vim 进入命令行时会自动补上 '<,'> 范围，只需输入 s/a/b/g
@@ -63,7 +90,7 @@ return {
           -- grug-far 在选中行范围内查找关键词（选中文本不作为关键词，范围限定为选区行区间）
           ["<Leader>S"] = { ":GrugFarWithin<CR>", desc = "Search/Replace in selection range" },
           -- 视觉模式同样禁用 K（keyword lookup）
-          ["K"] = { "<Nop>", desc = "disabled (was: keyword lookup/man)" },
+          -- ["K"] = { "<Nop>", desc = "disabled (was: keyword lookup/man)" },
         },
         i = {},
         t = {
