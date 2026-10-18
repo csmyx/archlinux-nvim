@@ -44,6 +44,9 @@ return {
           -- 引用跳转循环化（snacks.words 自带 cycle 参数，覆盖 AstroNvim 默认的非循环版本）
           ["]r"] = { function() require("snacks").words.jump(vim.v.count1, true) end, desc = "Next reference (cyclic)" },
           ["[r"] = { function() require("snacks").words.jump(-vim.v.count1, true) end, desc = "Previous reference (cyclic)" },
+          -- Alt+n/p 同 ]r/[r 的循环引用跳转
+          ["<A-n>"] = { function() require("snacks").words.jump(vim.v.count1, true) end, desc = "Next reference (cyclic)" },
+          ["<A-p>"] = { function() require("snacks").words.jump(-vim.v.count1, true) end, desc = "Previous reference (cyclic)" },
         },
         v = {
           ["gh"] = { "^", desc = "go to head of line" },
