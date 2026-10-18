@@ -41,29 +41,6 @@ return {
           ["<Leader>rr"] = { ":%s///gcI<Left><Left><Left><Left><Left>", desc = "Replace in file (confirm)" },
           -- 禁用内置 K 键（keyword lookup，默认调 man），防止误触
           -- ["K"] = { "<Nop>", desc = "disabled (was: keyword lookup/man)" },
-          -- quickfix 循环跳转（覆盖 nvim 内置 ]q/[q 到末尾报 E553 的行为）
-          ["]q"] = {
-            function()
-              local qf = vim.fn.getqflist { idx = 0, size = 0 }
-              if not qf or qf.size == 0 then
-                vim.notify("Quickfix list is empty", vim.log.levels.WARN, { title = "Quickfix" })
-                return
-              end
-              vim.cmd("cc" .. (((qf.idx or 0) + vim.v.count1 - 1) % qf.size + 1))
-            end,
-            desc = "Next quickfix (cyclic)",
-          },
-          ["[q"] = {
-            function()
-              local qf = vim.fn.getqflist { idx = 0, size = 0 }
-              if not qf or qf.size == 0 then
-                vim.notify("Quickfix list is empty", vim.log.levels.WARN, { title = "Quickfix" })
-                return
-              end
-              vim.cmd("cc" .. (((qf.idx or 0) - vim.v.count1 - 1) % qf.size + 1))
-            end,
-            desc = "Previous quickfix (cyclic)",
-          },
           -- 引用跳转循环化（snacks.words 自带 cycle 参数，覆盖 AstroNvim 默认的非循环版本）
           ["]r"] = { function() require("snacks").words.jump(vim.v.count1, true) end, desc = "Next reference (cyclic)" },
           ["[r"] = { function() require("snacks").words.jump(-vim.v.count1, true) end, desc = "Previous reference (cyclic)" },
