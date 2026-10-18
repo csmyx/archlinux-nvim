@@ -106,6 +106,9 @@ return {
           ["<A-P>"] = { function() global_ref_jump(-1) end, desc = "Previous reference (global, cyclic)" },
           -- 保留当前窗口，关闭其他所有窗口（:only）
           ["<A-q>"] = { "<C-w>o", desc = "Close all other windows" },
+          -- Alt+m/M 同 vim 内置 ]m/[m 的方法定义跳转
+          ["<A-m>"] = { "]m", desc = "Next method" },
+          ["<A-M>"] = { "[m", desc = "Previous method" },
         },
         v = {
           ["gh"] = { "^", desc = "go to head of line" },
