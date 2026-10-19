@@ -47,8 +47,10 @@ return {
       status.component.fill(),
       status.component.cmd_info(),
       status.component.fill(),
-      status.component.builder(NeoCodeium),
+      -- 放在 LSP 右侧：LSP 进度信息出现/变长时不会把图标往左推
       status.component.lsp(),
+      { provider = " " }, -- 与 LSP 文字之间留一个小间隔
+      status.component.builder(NeoCodeium),
       status.component.virtual_env(),
       -- status.component.treesitter(),
       status.component.nav(),
