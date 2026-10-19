@@ -8,11 +8,9 @@ return {
   -- == Examples of Adding Plugins ==
 
   "andweeb/presence.nvim",
-  {
-    "ray-x/lsp_signature.nvim",
-    event = "BufRead",
-    config = function() require("lsp_signature").setup() end,
-  },
+
+  -- 签名提示统一交给 blink.cmp 自带功能（见 lua/plugins/blink.lua）
+  { "ray-x/lsp_signature.nvim", enabled = false },
 
   -- You can disable default plugins as follows:
   { "max397574/better-escape.nvim", enabled = false },
