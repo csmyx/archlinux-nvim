@@ -43,6 +43,17 @@ return {
       end
 
       maps.n["<Leader>tt"] = { "<Cmd>ToggleTerm direction=tab<CR>", desc = "ToggleTerm tab" }
+
+      -- Ctrl+` 打开/关闭右侧垂直分屏终端（botright vsplit，固定在最右，宽 80 列）
+      local right_term
+      local function toggle_right_term()
+        if not right_term then
+          right_term = require("toggleterm.terminal").Terminal:new { direction = "vertical" }
+        end
+        right_term:toggle(80)
+      end
+      maps.n["<C-`>"] = { toggle_right_term, desc = "ToggleTerm vertical (right)" }
+      maps.t["<C-`>"] = { toggle_right_term, desc = "ToggleTerm vertical (right)" }
     end,
   },
 
