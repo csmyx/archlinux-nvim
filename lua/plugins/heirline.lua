@@ -4,9 +4,30 @@ return {
     local status = require "astroui.status"
 
     -- NOTE: https://github.com/rebelot/heirline.nvim/blob/master/cookbook.md#working-directory
-    local conditions = require "heirline.conditions"
     -- Show the directory of the current buffer's file (falls back to cwd),
     -- so it follows go-to-definition jumps into dependency sources.
+    -- When the path is too long, drop the leading directories and keep the
+    -- trailing components readable ("~/.../parent/dir") instead of shortening
+    -- every component to a single letter.
+    local function shorten_path(path, max_width)
+      if #vim.split(path, "/", { plain = true }) <= 2 or vim.fn.strdisplaywidth(path) <= max_width then
+        return path
+      end
+      local parts = vim.split(path, "/", { plain = true })
+      local prefix = parts[1] -- "~" or ""
+      local tail, tail_width = {}, vim.fn.strdisplaywidth(prefix .. "/…/")
+      for i = #parts, 2, -1 do
+        local w = vim.fn.strdisplaywidth(parts[i]) + 1
+        if tail_width + w > max_width then break end
+        table.insert(tail, 1, parts[i])
+        tail_width = tail_width + w
+      end
+      if #tail == 0 then
+        return vim.fn.strcharpart(path, 0, math.max(1, max_width - 1)) .. "…"
+      end
+      return prefix .. "/…/" .. table.concat(tail, "/")
+    end
+
     local WorkDir = {
       update = {
         "BufEnter",
@@ -18,7 +39,10 @@ return {
         local path = vim.api.nvim_buf_get_name(0)
         local cwd = (path ~= "" and vim.fn.fnamemodify(path, ":p:h")) or vim.fn.getcwd(0)
         cwd = vim.fn.fnamemodify(cwd, ":~")
-        if not conditions.width_percent_below(#cwd, 0.25) then cwd = vim.fn.pathshorten(cwd) end
+        -- Keep the path verbatim when it fits roughly half of the window
+        -- (clamped to 40..100 cells), otherwise shorten from the left.
+        local budget = math.max(40, math.min(100, math.floor(vim.o.columns * 0.5)))
+        cwd = shorten_path(cwd, budget)
         local trail = cwd:sub(-1) == "/" and "" or "/"
         return icon .. cwd .. trail
       end,
