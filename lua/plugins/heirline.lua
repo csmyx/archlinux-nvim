@@ -5,10 +5,18 @@ return {
 
     -- NOTE: https://github.com/rebelot/heirline.nvim/blob/master/cookbook.md#working-directory
     local conditions = require "heirline.conditions"
+    -- Show the directory of the current buffer's file (falls back to cwd),
+    -- so it follows go-to-definition jumps into dependency sources.
     local WorkDir = {
+      update = {
+        "BufEnter",
+        "DirChanged",
+        callback = function() vim.schedule(vim.cmd.redrawstatus) end,
+      },
       provider = function()
         local icon = " "
-        local cwd = vim.fn.getcwd(0)
+        local path = vim.api.nvim_buf_get_name(0)
+        local cwd = (path ~= "" and vim.fn.fnamemodify(path, ":p:h")) or vim.fn.getcwd(0)
         cwd = vim.fn.fnamemodify(cwd, ":~")
         if not conditions.width_percent_below(#cwd, 0.25) then cwd = vim.fn.pathshorten(cwd) end
         local trail = cwd:sub(-1) == "/" and "" or "/"
