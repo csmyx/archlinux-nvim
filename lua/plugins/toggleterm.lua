@@ -44,7 +44,8 @@ return {
 
       maps.n["<Leader>tt"] = { "<Cmd>ToggleTerm direction=tab<CR>", desc = "ToggleTerm tab" }
 
-      -- Ctrl+` 打开/关闭右侧垂直分屏终端（botright vsplit，固定在最右，宽 80 列）
+      -- Ctrl+\ 打开/关闭右侧垂直分屏终端（botright vsplit，固定在最右，宽 80 列）
+      -- 注意：terminal 模式下 <C-\> 是 nvim 内置的退出终端模式前缀（<C-\><C-n>），不能占用
       local right_term
       local function toggle_right_term()
         if not right_term then
@@ -52,8 +53,7 @@ return {
         end
         right_term:toggle(80)
       end
-      maps.n["<C-`>"] = { toggle_right_term, desc = "ToggleTerm vertical (right)" }
-      maps.t["<C-`>"] = { toggle_right_term, desc = "ToggleTerm vertical (right)" }
+      maps.n["<C-\\>"] = { toggle_right_term, desc = "ToggleTerm vertical (right)" }
     end,
   },
 
