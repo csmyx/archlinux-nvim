@@ -68,11 +68,26 @@ return {
 
           -- 全局替换（当前文件，逐个确认）：自动展开为 :%s///gcI，光标停在第一个 / 后
           ["<Leader>rr"] = { ":%s///gcI<Left><Left><Left><Left><Left>", desc = "Replace in file (confirm)" },
+          -- Save without triggering auto-format (one-shot, keeps the global/buffer auto-format toggles untouched)
+          ["<Leader>W"] = {
+            function()
+              local prev_astrolsp, prev_conform = vim.b.autoformat, vim.b.disable_autoformat
+              vim.b.autoformat = false
+              vim.b.disable_autoformat = true
+              vim.cmd.write()
+              vim.b.autoformat = prev_astrolsp
+              vim.b.disable_autoformat = prev_conform
+            end,
+            desc = "Save without format",
+          },
           -- 禁用内置 K 键（keyword lookup，默认调 man），防止误触
           -- ["K"] = { "<Nop>", desc = "disabled (was: keyword lookup/man)" },
           -- 引用跳转循环化（snacks.words 自带 cycle 参数，覆盖 AstroNvim 默认的非循环版本）
           ["]r"] = { function() require("snacks").words.jump(vim.v.count1, true) end, desc = "Next reference (cyclic)" },
-          ["[r"] = { function() require("snacks").words.jump(-vim.v.count1, true) end, desc = "Previous reference (cyclic)" },
+          ["[r"] = {
+            function() require("snacks").words.jump(-vim.v.count1, true) end,
+            desc = "Previous reference (cyclic)",
+          },
           -- quickfix 循环跳转（覆盖 nvim 内置 ]q/[q 到末尾报 E553 的行为）
           ["]q"] = {
             function()
@@ -97,8 +112,14 @@ return {
             desc = "Previous quickfix (cyclic)",
           },
           -- Alt+n/p 同 ]r/[r 的循环引用跳转
-          ["<A-n>"] = { function() require("snacks").words.jump(vim.v.count1, true) end, desc = "Next reference (cyclic)" },
-          ["<A-p>"] = { function() require("snacks").words.jump(-vim.v.count1, true) end, desc = "Previous reference (cyclic)" },
+          ["<A-n>"] = {
+            function() require("snacks").words.jump(vim.v.count1, true) end,
+            desc = "Next reference (cyclic)",
+          },
+          ["<A-p>"] = {
+            function() require("snacks").words.jump(-vim.v.count1, true) end,
+            desc = "Previous reference (cyclic)",
+          },
           -- 全局（跨文件）循环引用跳转
           ["]R"] = { function() global_ref_jump(1) end, desc = "Next reference (global, cyclic)" },
           ["[R"] = { function() global_ref_jump(-1) end, desc = "Previous reference (global, cyclic)" },
